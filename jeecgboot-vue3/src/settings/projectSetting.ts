@@ -46,7 +46,7 @@ const setting: ProjectConfig = {
   themeColor: primaryColor,
   // update-begin--author:liaozhiyang---date:20250414--for：【QQYUN-11956】修复projectSetting中配置主题模式不生效
   // 项目主题模式
-  themeMode: darkMode,
+  themeMode: ThemeEnum.DARK,
   // update-end--author:liaozhiyang---date:20250414--for：【QQYUN-11956】修复projectSetting中配置主题模式不生效
 
   // 网站灰色模式，用于可能悼念的日期开启
@@ -109,9 +109,9 @@ const setting: ProjectConfig = {
     // 菜单宽度
     menuWidth: 210,
     // 菜单模式
-    mode: MenuModeEnum.INLINE,
+    mode: MenuModeEnum.HORIZONTAL,
     // 菜单类型
-    type: MenuTypeEnum.SIDEBAR,
+    type: MenuTypeEnum.TOP_MENU,
     // 菜单主题
     theme: ThemeEnum.DARK,
     // update-begin--author:liaozhiyang---date:20241203---for：【issues/7522】解决menuSetting ts警告
@@ -149,7 +149,7 @@ const setting: ProjectConfig = {
     // 是否显示折叠按钮
     showFold: true,
     // 标签页样式
-    theme: TabsThemeEnum.CARD,
+    theme: TabsThemeEnum.SIMPLE,
   },
 
   // 动画配置

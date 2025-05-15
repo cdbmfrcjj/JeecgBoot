@@ -87,7 +87,9 @@
         <module>jeecg-boot-base-core</module>
         <module>jeecg-module-system</module>
         <module>jeecg-boot-module</module>
-    </modules>
+        <module>gopha-biz</module>
+		<module>gopha-core</module>
+	</modules>
 
 	<repositories>
 		<repository>

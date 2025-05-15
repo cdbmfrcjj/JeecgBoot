@@ -16,7 +16,7 @@
       <div class="aui-content">
         <div class="aui-container">
           <div class="aui-form">
-            <div class="aui-image">
+            <div class="aui-image" style="background-image: none;padding: 130px 80px;">
               <div class="aui-image-text">
                 <img :src="adTextImg" />
               </div>
@@ -27,9 +27,9 @@
                   <div class="aui-flex-box" :class="activeIndex === 'accountLogin' ? 'activeNav on' : ''" @click="loginClick('accountLogin')"
                     >{{ t('sys.login.signInFormTitle') }}
                   </div>
-                  <div class="aui-flex-box" :class="activeIndex === 'phoneLogin' ? 'activeNav on' : ''" @click="loginClick('phoneLogin')"
+                  <!-- <div class="aui-flex-box" :class="activeIndex === 'phoneLogin' ? 'activeNav on' : ''" @click="loginClick('phoneLogin')"
                     >{{ t('sys.login.mobileSignInFormTitle') }}
-                  </div>
+                  </div> -->
                 </div>
                 <div class="aui-form-box" style="height: 180px">
                   <a-form ref="loginRef" :model="formData" v-if="activeIndex === 'accountLogin'" @keyup.enter.native="loginHandleClick">
@@ -46,7 +46,7 @@
                           <a-input class="fix-auto-fill" type="password" :placeholder="t('sys.login.password')" v-model:value="formData.password" />
                         </a-form-item>
                       </div>
-                      <div class="aui-inputClear">
+                      <!-- <div class="aui-inputClear">
                         <i class="icon icon-code"></i>
                         <a-form-item>
                           <a-input class="fix-auto-fill" type="text" :placeholder="t('sys.login.inputCode')" v-model:value="formData.inputCode" />
@@ -55,7 +55,7 @@
                           <img v-if="randCodeData.requestCodeSuccess" :src="randCodeData.randCodeImage" @click="handleChangeCheckCode" />
                           <img v-else style="margin-top: 2px; max-width: initial" :src="codeImg" @click="handleChangeCheckCode" />
                         </div>
-                      </div>
+                      </div> -->
                       <div class="aui-flex">
                         <div class="aui-flex-box">
                           <div class="aui-choice">
@@ -63,9 +63,9 @@
                             <span style="margin-left: 5px">{{ t('sys.login.rememberMe') }}</span>
                           </div>
                         </div>
-                        <div class="aui-forget">
+                        <!-- <div class="aui-forget">
                           <a @click="forgetHandelClick"> {{ t('sys.login.forgetPassword') }}</a>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </a-form>
@@ -91,15 +91,15 @@
                     <a-button :loading="loginLoading" class="aui-link-login" type="primary" @click="loginHandleClick">
                       {{ t('sys.login.loginButton') }}</a-button>
                   </div>
-                  <div class="aui-flex">
+                  <!-- <div class="aui-flex">
                     <a class="aui-linek-code aui-flex-box" @click="codeHandleClick">{{ t('sys.login.qrSignInFormTitle') }}</a>
                   </div>
                   <div class="aui-flex">
                     <a class="aui-linek-code aui-flex-box" @click="registerHandleClick">{{ t('sys.login.registerButton') }}</a>
-                  </div>
+                  </div> -->
                 </div>
               </div>
-              <a-form @keyup.enter.native="loginHandleClick">
+              <!-- <a-form @keyup.enter.native="loginHandleClick">
                 <div class="aui-flex aui-third-text">
                   <div class="aui-flex-box aui-third-border">
                     <span>{{ t('sys.login.otherSignIn') }}</span>
@@ -127,7 +127,7 @@
                     </div>
                   </div>
                 </div>
-              </a-form>
+              </a-form> -->
             </div>
           </div>
         </div>
@@ -194,8 +194,8 @@
   //账号登录表单字段
   const formData = reactive<any>({
     inputCode: '',
-    username: 'admin',
-    password: '123456',
+    username: '',
+    password: '',
   });
   //手机登录表单字段
   const phoneFormData = reactive<any>({

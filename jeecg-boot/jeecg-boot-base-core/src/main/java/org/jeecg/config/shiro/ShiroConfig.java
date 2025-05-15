@@ -182,6 +182,16 @@ public class ShiroConfig {
 
         filterChainDefinitionMap.put("/openapi/call/**", "anon");
 
+        //-------------------------------国裕修改-----------------------------------------------------
+        //开放自定义接口
+        filterChainDefinitionMap.put("/autoApi/execute/public/**", "anon");
+        //获取验证码
+        filterChainDefinitionMap.put("/msgCode/sysMsgCode/getMsgCode", "anon");
+        //手机端忘记密码
+        filterChainDefinitionMap.put("/app/fp/forgetPasswotd", "anon");
+        //手机端文件上传
+        filterChainDefinitionMap.put("/sys/common/appUpload", "anon");
+        //-------------------------------国裕修改-----------------------------------------------------
         // 添加自己的过滤器并且取名为jwt
         Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
         //如果cloudServer为空 则说明是单体 需要加载跨域配置【微服务跨域切换】

@@ -37,6 +37,19 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
+
+        <!--核心功能模块 -->
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>gopha-core</artifactId>
+            <version>3.6.3</version>
+        </dependency>
+        <!--业务功能模块 -->
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>gopha-biz</artifactId>
+            <version>3.6.3</version>
+        </dependency>
     </dependencies>
 
     <build>

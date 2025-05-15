@@ -3,6 +3,7 @@
     <!-- 全屏按钮 -->
     <a-icon v-if="fullScreen" class="full-screen-icon" :type="fullScreenIcon" @click="onToggleFullScreen" />
     <textarea ref="textarea" v-bind="getBindValue"></textarea>
+    
   </div>
 </template>
 
@@ -16,6 +17,7 @@
   import 'codemirror/lib/codemirror.css';
   // 引入主题后还需要在 options 中指定主题才会生效
   import 'codemirror/theme/idea.css';
+  import 'codemirror/theme/monokai.css';
   // 需要引入具体的语法高亮库才会有对应的语法高亮效果
   import 'codemirror/mode/javascript/javascript.js';
   import 'codemirror/mode/css/css.js';
@@ -99,13 +101,14 @@
         line: true,
         // 启用代码折叠相关功能:开始
         foldGutter: true,
-        lineWrapping: true,
+        lineWrapping: false,
         gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
         // 启用代码折叠相关功能:结束
         // 光标行高亮
         styleActiveLine: true,
         // update-begin--author:liaozhiyang---date:20231201---for：【issues/869】JCodeEditor组件初始化时没有设置mode
-        mode: props.language,
+        // 删掉才好使
+        // mode: props.language,
         // update-begin--author:liaozhiyang---date:20231201---for：【issues/869】JCodeEditor组件初始化时没有设置mode
         // update-begin--author:liaozhiyang---date:20240603---for：【TV360X-898】代码生成之后的预览改成只读
         readOnly: props.disabled,

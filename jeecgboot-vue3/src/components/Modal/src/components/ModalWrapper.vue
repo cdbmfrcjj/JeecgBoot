@@ -161,7 +161,6 @@
       }
 
       async function setModalHeight(option?) {
-        console.log("---------性能监控--------setModalHeight----------")
         const options = option || {};
         const source = options.source;
         const callBack = options.callBack;
