@@ -19,6 +19,9 @@
   import IndexChart from './homePage/IndexChart.vue';
   import IndexBdc from './homePage/IndexBdc.vue';
   import IndexTask from './homePage/IndexTask.vue';
-
+  let _a = 1;
+  let b = 2;
+  let c = 3;
+  console.log(_a+b+c);
   const indexStyle = ref(0);
 </script>
