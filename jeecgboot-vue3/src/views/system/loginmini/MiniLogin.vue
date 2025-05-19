@@ -16,7 +16,7 @@
       <div class="aui-content">
         <div class="aui-container">
           <div class="aui-form">
-            <div class="aui-image" style="background-image: none;padding: 130px 80px;">
+            <div class="aui-image" style="padding:0px;">
               <div class="aui-image-text">
                 <img :src="adTextImg" />
               </div>
@@ -162,8 +162,8 @@
   import MiniForgotpad from './MiniForgotpad.vue';
   import MiniRegister from './MiniRegister.vue';
   import MiniCodelogin from './MiniCodelogin.vue';
-  import logoImg from '/@/assets/loginmini/icon/jeecg_logo.png';
-  import adTextImg from '/@/assets/loginmini/icon/jeecg_ad_text.png';
+  import logoImg from '/@/assets/images/logo.png';
+  import adTextImg from '/@/assets/loginmini/icon/login_left_img.png';
   import { AppLocalePicker, AppDarkModeToggle } from '/@/components/Application';
   import { useLocaleStore } from '/@/store/modules/locale';
   import { useDesign } from "/@/hooks/web/useDesign";

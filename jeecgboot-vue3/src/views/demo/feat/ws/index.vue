@@ -9,7 +9,7 @@
         <hr class="my-4" />
 
         <div class="flex">
-          <a-input v-model:value="server" disabled>
+          <a-input v-model:value="server">
             <template #addonBefore> 服务地址 </template>
           </a-input>
           <a-button :type="getIsOpen ? 'danger' : 'primary'" @click="toggle">
@@ -61,7 +61,7 @@
     },
     setup() {
       const state = reactive({
-        server: 'ws://localhost:3300/test',
+        server: 'ws://localhost:8080/test',
         sendValue: '',
         recordList: [] as { id: number; time: number; res: string }[],
       });
