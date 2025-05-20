@@ -24,22 +24,41 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label="身份验证" v-bind="validateInfos.permission">
-	          <j-dict-select-tag v-model:value="formData.permission" dictCode="autoapiPermissions" placeholder="请选择身份验证" :disabled="disabled"/>
+            <!-- <j-dict-select-tag v-model:value="formData.permission" dictCode="autoapiPermissions" placeholder="请选择身份验证" :disabled="disabled" /> -->
+            <a-select v-model:value="formData.permission" placeholder="请选择身份验证" :disabled="disabled">
+              <a-select-option value="enable"> 启用 </a-select-option>
+              <a-select-option value="disable"> 禁用 </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="执行日志" v-bind="validateInfos.saveLog">
-	          <j-dict-select-tag v-model:value="formData.saveLog" dictCode="autoapiPermissions" placeholder="请选择是否记录日志" :disabled="disabled"/>
+            <!-- <select v-model:value="formData.saveLog" dictCode="autoapiPermissions" placeholder="请选择是否记录日志" :disabled="disabled" /> -->
+            <a-select v-model:value="formData.saveLog" placeholder="请选择是否记录日志" :disabled="disabled">
+              <a-select-option value="enable"> 启用 </a-select-option>
+              <a-select-option value="disable"> 禁用 </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item label="通用处理" v-bind="validateInfos.handleId">
-	          <j-dict-select-tag v-model:value="formData.handleId" dictCode="sys_autoapi_handle,name,id" placeholder="请选择通用处理" :disabled="disabled"/>
+            <j-dict-select-tag
+              v-model:value="formData.handleId"
+              dictCode="sys_autoapi_handle,name,id"
+              placeholder="请选择通用处理"
+              :disabled="disabled"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item style="padding-left: 17px;" label="代码" v-bind="validateInfos.codeText" :label-col='{span:2}' :wrapper-col="{ offset: 0, span: 21 }">
-            <JCodeEditor v-model:value="formData.codeText" mode="groovy" height="300px"  :fullScreen="true" theme="darcula"/>
+          <a-form-item
+            style="padding-left: 17px"
+            label="代码"
+            v-bind="validateInfos.codeText"
+            :label-col="{ span: 2 }"
+            :wrapper-col="{ offset: 0, span: 21 }"
+          >
+            <JCodeEditor v-model:value="formData.codeText" mode="groovy" height="300px" :fullScreen="true" theme="darcula" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -50,30 +69,31 @@
 <script lang="ts" setup>
   import { ref, reactive, defineExpose, nextTick, defineProps, computed, onMounted } from 'vue';
   // import { CodeEditor } from '/@/components/CodeEditor';
-  import {JCodeEditor } from '/@/components/Form';
+  import { JCodeEditor } from '/@/components/Form';
   import { useMessage } from '/@/hooks/web/useMessage';
   import JDictSelectTag from '/@/components/Form/src/jeecg/components/JDictSelectTag.vue';
   import { getValueType } from '/@/utils';
   import { saveOrUpdate } from '../SysAutoapiManage.api';
   import { Form } from 'ant-design-vue';
-  
+
   const props = defineProps({
     formDisabled: { type: Boolean, default: false },
-    formData: { type: Object, default: ()=>{} },
-    formBpm: { type: Boolean, default: true }
+    formData: { type: Object, default: () => {} },
+    formBpm: { type: Boolean, default: true },
   });
   const formRef = ref();
   const useForm = Form.useForm;
   const emit = defineEmits(['register', 'ok']);
+  // eslint-disable-next-line vue/no-dupe-keys
   const formData = reactive<Record<string, any>>({
     id: '',
-    name: '',   
-    description: '',   
-    paramsDescription: '',   
-    doParams: '',   
-    permission: '',   
-    handleId: '',   
-    codeText: '',   
+    name: '',
+    description: '',
+    paramsDescription: '',
+    doParams: '',
+    permission: '',
+    handleId: '',
+    codeText: '',
   });
   const { createMessage } = useMessage();
   const labelCol = ref<any>({ xs: { span: 24 }, sm: { span: 5 } });
@@ -81,30 +101,29 @@
   const confirmLoading = ref<boolean>(false);
   //表单验证
   const validatorRules = {
-    name: [{ required: true, message: '请输入名称!'},],
-    permission: [{ required: true, message: '请输入身份验证!'},],
-    saveLog: [{ required: true, message: '请输入是否记录日志!'},],
+    name: [{ required: true, message: '请输入名称!' }],
+    permission: [{ required: true, message: '请输入身份验证!' }],
+    saveLog: [{ required: true, message: '请输入是否记录日志!' }],
   };
   const { resetFields, validate, validateInfos } = useForm(formData, validatorRules, { immediate: true });
 
   // 表单禁用
-  const disabled = computed(()=>{
-    if(props.formBpm === true){
-      if(props.formData.disabled === false){
+  const disabled = computed(() => {
+    if (props.formBpm === true) {
+      if (props.formData.disabled === false) {
         return false;
-      }else{
+      } else {
         return true;
       }
     }
     return props.formDisabled;
   });
 
-  
   /**
    * 新增
    */
   function add() {
-    edit({permission:"disable",permission_dictText:"禁用",saveLog:"enable",saveLog_dictText:"启用","createTime":""});
+    edit({ permission: 'disable', permission_dictText: '禁用', saveLog: 'enable', saveLog_dictText: '启用', createTime: '' });
   }
 
   /**
@@ -156,7 +175,6 @@
         confirmLoading.value = false;
       });
   }
-
 
   defineExpose({
     add,

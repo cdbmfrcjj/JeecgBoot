@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
- /**
+/**
  * @Description: 动态接口开发管理
  * @Author: jeecg-boot
  * @Date:   2023-08-24
@@ -34,7 +34,7 @@ import java.util.Arrays;
 public class SysAutoapiManageController extends JeecgController<SysAutoapiManage, ISysAutoapiManageService> {
 	@Autowired
 	private ISysAutoapiManageService sysAutoapiManageService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -48,15 +48,16 @@ public class SysAutoapiManageController extends JeecgController<SysAutoapiManage
 	@Operation(summary="动态接口开发管理-分页列表查询")
 	@GetMapping(value = "/list")
 	public Result<IPage<SysAutoapiManage>> queryPageList(SysAutoapiManage sysAutoapiManage,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
+														 @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+														 @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+														 HttpServletRequest req) {
 		QueryWrapper<SysAutoapiManage> queryWrapper = QueryGenerator.initQueryWrapper(sysAutoapiManage, req.getParameterMap());
 		Page<SysAutoapiManage> page = new Page<SysAutoapiManage>(pageNo, pageSize);
 		IPage<SysAutoapiManage> pageList = sysAutoapiManageService.page(page, queryWrapper);
+		System.out.println(pageList);
 		return Result.OK(pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -71,7 +72,7 @@ public class SysAutoapiManageController extends JeecgController<SysAutoapiManage
 		sysAutoapiManageService.save(sysAutoapiManage);
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -86,7 +87,7 @@ public class SysAutoapiManageController extends JeecgController<SysAutoapiManage
 		sysAutoapiManageService.updateById(sysAutoapiManage);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -101,7 +102,7 @@ public class SysAutoapiManageController extends JeecgController<SysAutoapiManage
 		sysAutoapiManageService.removeById(id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -116,7 +117,7 @@ public class SysAutoapiManageController extends JeecgController<SysAutoapiManage
 		this.sysAutoapiManageService.removeByIds(Arrays.asList(ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -134,29 +135,29 @@ public class SysAutoapiManageController extends JeecgController<SysAutoapiManage
 		return Result.OK(sysAutoapiManage);
 	}
 
-    /**
-    * 导出excel
-    *
-    * @param request
-    * @param sysAutoapiManage
-    */
-    @RequiresPermissions("autoapi:sys_autoapi_manage:exportXls")
-    @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, SysAutoapiManage sysAutoapiManage) {
-        return super.exportXls(request, sysAutoapiManage, SysAutoapiManage.class, "动态接口开发管理");
-    }
+	/**
+	 * 导出excel
+	 *
+	 * @param request
+	 * @param sysAutoapiManage
+	 */
+	@RequiresPermissions("autoapi:sys_autoapi_manage:exportXls")
+	@RequestMapping(value = "/exportXls")
+	public ModelAndView exportXls(HttpServletRequest request, SysAutoapiManage sysAutoapiManage) {
+		return super.exportXls(request, sysAutoapiManage, SysAutoapiManage.class, "动态接口开发管理");
+	}
 
-    /**
-      * 通过excel导入数据
-    *
-    * @param request
-    * @param response
-    * @return
-    */
-    @RequiresPermissions("autoapi:sys_autoapi_manage:importExcel")
-    @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, SysAutoapiManage.class);
-    }
+	/**
+	 * 通过excel导入数据
+	 *
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequiresPermissions("autoapi:sys_autoapi_manage:importExcel")
+	@RequestMapping(value = "/importExcel", method = RequestMethod.POST)
+	public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
+		return super.importExcel(request, response, SysAutoapiManage.class);
+	}
 
 }

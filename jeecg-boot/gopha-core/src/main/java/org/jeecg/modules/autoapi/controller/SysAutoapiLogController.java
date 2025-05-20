@@ -34,7 +34,7 @@ import java.util.Arrays;
 public class SysAutoapiLogController extends JeecgController<SysAutoapiLog, ISysAutoapiLogService> {
 	@Autowired
 	private ISysAutoapiLogService sysAutoapiLogService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -56,7 +56,7 @@ public class SysAutoapiLogController extends JeecgController<SysAutoapiLog, ISys
 		IPage<SysAutoapiLog> pageList = sysAutoapiLogService.page(page, queryWrapper);
 		return Result.OK(pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -71,7 +71,7 @@ public class SysAutoapiLogController extends JeecgController<SysAutoapiLog, ISys
 		sysAutoapiLogService.save(sysAutoapiLog);
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -86,7 +86,7 @@ public class SysAutoapiLogController extends JeecgController<SysAutoapiLog, ISys
 		sysAutoapiLogService.updateById(sysAutoapiLog);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -101,7 +101,7 @@ public class SysAutoapiLogController extends JeecgController<SysAutoapiLog, ISys
 		sysAutoapiLogService.removeById(id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -116,7 +116,7 @@ public class SysAutoapiLogController extends JeecgController<SysAutoapiLog, ISys
 		this.sysAutoapiLogService.removeByIds(Arrays.asList(ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
