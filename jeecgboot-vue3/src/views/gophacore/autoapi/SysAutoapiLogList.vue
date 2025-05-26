@@ -2,7 +2,7 @@
   <div>
     <!--查询区域-->
     <div class="jeecg-basic-table-form-container">
-      <a-form ref="formRef" @keyup.enter.native="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
+      <a-form ref="formRef" @keyup.enter="searchQuery" :model="queryParam" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-row :gutter="24">
           <a-col :lg="8">
             <a-form-item label="接口名称" name="name">
@@ -41,8 +41,8 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button  type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button  type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -52,25 +52,26 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button>批量操作
+          <a-button
+            >批量操作
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
       </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
+        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
       <!--字段回显插槽-->
-      <template #htmlSlot="{text}">
+      <template #htmlSlot="{ text }">
         <div v-html="text"></div>
       </template>
       <!--省市区字段回显插槽-->
-      <template #pcaSlot="{text}">
+      <template #pcaSlot="{ text }">
         {{ getAreaTextByCode(text) }}
       </template>
-      <template #fileSlot="{text}">
-        <span v-if="!text" style="font-size: 12px;font-style: italic;">无文件</span>
+      <template #fileSlot="{ text }">
+        <span v-if="!text" style="font-size: 12px; font-style: italic">无文件</span>
         <a-button v-else :ghost="true" type="primary" preIcon="ant-design:download-outlined" size="small" @click="downloadFile(text)">下载</a-button>
       </template>
     </BasicTable>
@@ -86,8 +87,8 @@
   import { columns } from './SysAutoapiLog.data';
   import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './SysAutoapiLog.api';
   import { downloadFile } from '/@/utils/common/renderUtils';
-  import SysAutoapiLogModal from './components/SysAutoapiLogModal.vue'
-
+  import SysAutoapiLogModal from './components/SysAutoapiLogModal.vue';
+  import { getAreaTextByCode } from '/@/components/Form/src/utils/Area';
   const formRef = ref();
   const queryParam = reactive<any>({});
   const toggleSearchStatus = ref<boolean>(false);
@@ -98,7 +99,7 @@
       title: '动态接口调用日志',
       api: list,
       columns,
-      canResize:false,
+      canResize: false,
       useSearchForm: false,
       actionColumn: {
         width: 120,
@@ -109,16 +110,17 @@
       },
     },
     exportConfig: {
-      name: "动态接口调用日志",
+      name: '动态接口调用日志',
       url: getExportUrl,
       params: queryParam,
     },
-	  importConfig: {
-	    url: getImportUrl,
-	    success: handleSuccess
-	  },
+    importConfig: {
+      url: getImportUrl,
+      success: handleSuccess,
+    },
   });
-  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] =
+    tableContext;
   const labelCol = reactive({
     xs: { span: 24 },
     sm: { span: 7 },
@@ -135,7 +137,7 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.add();
   }
-  
+
   /**
    * 编辑事件
    */
@@ -143,7 +145,7 @@
     registerModal.value.disableSubmit = false;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 详情
    */
@@ -151,28 +153,28 @@
     registerModal.value.disableSubmit = true;
     registerModal.value.edit(record);
   }
-   
+
   /**
    * 删除事件
    */
   async function handleDelete(record) {
     await deleteOne({ id: record.id }, handleSuccess);
   }
-   
+
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
-   
+
   /**
    * 成功回调
    */
   function handleSuccess() {
     (selectedRowKeys.value = []) && reload();
   }
-   
+
   /**
    * 操作栏
    */
@@ -184,7 +186,7 @@
       },
     ];
   }
-   
+
   /**
    * 下拉操作栏
    */
@@ -193,14 +195,15 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-      }, {
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
-        }
-      }
-    ]
+        },
+      },
+    ];
   }
 
   /**
@@ -209,7 +212,7 @@
   function searchQuery() {
     reload();
   }
-  
+
   /**
    * 重置
    */
@@ -219,10 +222,6 @@
     //刷新数据
     reload();
   }
-  
-
-
-
 </script>
 
 <style lang="less" scoped>
@@ -232,14 +231,14 @@
       margin-bottom: 24px;
       white-space: nowrap;
     }
-    .query-group-cust{
+    .query-group-cust {
       width: calc(50% - 15px);
       min-width: 100px !important;
     }
-    .query-group-split-cust{
+    .query-group-split-cust {
       width: 30px;
       display: inline-block;
-      text-align: center
+      text-align: center;
     }
   }
 </style>
