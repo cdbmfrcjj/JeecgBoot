@@ -1,0 +1,48 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-App<gopha-biz>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.jeecg.modules.App",
+            "projectName": "gopha-biz",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": "-Dfile.encoding=UTF-8"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-JeecgSystemApplication<jeecg-system-start>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.jeecg.JeecgSystemApplication",
+            "projectName": "jeecg-system-start",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": "-Dfile.encoding=UTF-8"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-JeecgDemoCloudApplication<jeecg-demo-cloud-start>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.jeecg.JeecgDemoCloudApplication",
+            "projectName": "jeecg-demo-cloud-start",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": "-Dfile.encoding=UTF-8"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-JeecgSystemCloudApplication<jeecg-system-cloud-start>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.jeecg.JeecgSystemCloudApplication",
+            "projectName": "jeecg-system-cloud-start",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": "-Dfile.encoding=UTF-8"
+        }
+    ]
+}

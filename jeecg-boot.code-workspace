@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "jeecg-boot"
+		},
+		{
+			"path": "jeecgboot-vue3"
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic"
+	}
+}

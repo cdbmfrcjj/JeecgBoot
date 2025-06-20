@@ -1,6 +1,7 @@
 package org.jeecg.modules.autoapi.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,7 +85,23 @@ public class SysAutoapiManageController extends JeecgController<SysAutoapiManage
 	@RequiresPermissions("autoapi:sys_autoapi_manage:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody SysAutoapiManage sysAutoapiManage) {
-		sysAutoapiManageService.updateById(sysAutoapiManage);
+		// 使用UpdateWrapper来支持null值更新
+		UpdateWrapper<SysAutoapiManage> updateWrapper = new UpdateWrapper<>();
+		updateWrapper.eq("id", sysAutoapiManage.getId());
+		
+		// 设置需要更新的字段，包括null值
+		updateWrapper.set("name", sysAutoapiManage.getName());
+		updateWrapper.set("description", sysAutoapiManage.getDescription());
+		updateWrapper.set("params_description", sysAutoapiManage.getParamsDescription());
+		updateWrapper.set("do_params", sysAutoapiManage.getDoParams());
+		updateWrapper.set("permission", sysAutoapiManage.getPermission());
+		updateWrapper.set("save_log", sysAutoapiManage.getSaveLog());
+		updateWrapper.set("handle_id", sysAutoapiManage.getHandleId());
+		updateWrapper.set("code_text", sysAutoapiManage.getCodeText());
+		updateWrapper.set("update_by", sysAutoapiManage.getUpdateBy());
+		updateWrapper.set("update_time", sysAutoapiManage.getUpdateTime());
+		
+		sysAutoapiManageService.update(updateWrapper);
 		return Result.OK("编辑成功!");
 	}
 
