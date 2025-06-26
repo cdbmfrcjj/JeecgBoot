@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jeecgframework.boot</groupId>
         <artifactId>jeecg-boot-module</artifactId>
-        <version>3.8.0</version>
+        <version>3.8.1</version>
     </parent>
 
     <artifactId>jeecg-boot-module-airag</artifactId>
@@ -53,12 +53,13 @@
             <artifactId>jeecg-system-cloud-api</artifactId>
         </dependency>-->
 
+        <!-- aiflow依赖 -->
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>jeecg-aiflow</artifactId>
-            <version>1.0.4</version>
+            <version>1.1.0</version>
         </dependency>
-        
+
         <!-- aiflow 脚本依赖 -->
         <dependency>
             <groupId>com.yomahub</groupId>
