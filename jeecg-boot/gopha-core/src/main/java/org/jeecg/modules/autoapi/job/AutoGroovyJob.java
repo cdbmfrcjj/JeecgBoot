@@ -32,38 +32,40 @@ public class AutoGroovyJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        QueryWrapper queryWrapper = new QueryWrapper<SysAutoapiManage>();
+        QueryWrapper<SysAutoapiManage> queryWrapper = new QueryWrapper<SysAutoapiManage>();
         queryWrapper.eq("name",parameter);
         SysAutoapiManage sam=this.sysAutoapiManageService.getOne(queryWrapper);
         SysAutoapiLog sal=new SysAutoapiLog();
         sal.setName("定时任务"+parameter);
         Object result=null;
-        ApplicationContext context= SpringContextUtils.getApplicationContext();
-        ClassLoader parent = this.getClass().getClassLoader();
-        GroovyClassLoader loader = new GroovyClassLoader(parent);
-        Class dataHandleScript = loader.parseClass(sam.getCodeText());
-        ExecuteHandleService executeHandleService= null;
+        
         try {
-            executeHandleService = (ExecuteHandleService)dataHandleScript.newInstance();
-
-            context.getAutowireCapableBeanFactory().autowireBean(executeHandleService);
-            Object resutl=executeHandleService.doPress(null,null,null);
-            System.out.println(resutl);
-
             if(sam==null){
                 result= Result.error("调用地址错误！");
                 sal.setStatus("失败");
                 sal.setData(JSON.toJSONString(result));
+            } else {
+                ApplicationContext context= SpringContextUtils.getApplicationContext();
+                ClassLoader parent = this.getClass().getClassLoader();
+                try (GroovyClassLoader loader = new GroovyClassLoader(parent)) {
+                    Class<?> dataHandleScript = loader.parseClass(sam.getCodeText());
+                    ExecuteHandleService executeHandleService = (ExecuteHandleService)dataHandleScript.getDeclaredConstructor().newInstance();
+
+                    context.getAutowireCapableBeanFactory().autowireBean(executeHandleService);
+                    Object resutl=executeHandleService.doPress(null,null,null);
+                    System.out.println(resutl);
+
+                    if(result instanceof Result){
+                        sal.setData(JSON.toJSONString(result));
+                    }else if(result instanceof String){
+                        sal.setData(result.toString());
+                    }else{
+                        result=Result.OK(result);
+                        sal.setData(JSON.toJSONString(Result.OK(result)));
+                    }
+                    sal.setStatus("成功");
+                }
             }
-            if(result instanceof Result){
-                sal.setData(JSON.toJSONString(result));
-            }else if(result instanceof String){
-                sal.setData(result.toString());
-            }else{
-                result=Result.OK(result);
-                sal.setData(JSON.toJSONString(Result.OK(result)));
-            }
-            sal.setStatus("成功");
 
         } catch (Exception e) {
             e.printStackTrace();
