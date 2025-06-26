@@ -1,9 +1,13 @@
 package org.jeecg.modules.autoapi.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import groovy.lang.GroovyClassLoader;
-import lombok.extern.slf4j.Slf4j;
+import java.io.BufferedReader;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.util.IpUtils;
@@ -11,7 +15,11 @@ import org.jeecg.common.util.SpringContextUtils;
 import org.jeecg.modules.autoapi.entity.SysAutoapiHandle;
 import org.jeecg.modules.autoapi.entity.SysAutoapiLog;
 import org.jeecg.modules.autoapi.entity.SysAutoapiManage;
-import org.jeecg.modules.autoapi.service.*;
+import org.jeecg.modules.autoapi.service.AfterExecuteHandleService;
+import org.jeecg.modules.autoapi.service.ExecuteHandleService;
+import org.jeecg.modules.autoapi.service.ISysAutoapiHandleService;
+import org.jeecg.modules.autoapi.service.ISysAutoapiLogService;
+import org.jeecg.modules.autoapi.service.ISysAutoapiManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +29,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+import groovy.lang.GroovyClassLoader;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -45,14 +53,14 @@ public class SysAutoApiExecuteController {
     @RequestMapping("/execute/{type}/{name}")
     @Transactional
     public Object execute(HttpServletRequest request, HttpServletResponse response, @RequestHeader Map<String, String> header, @PathVariable String type, @PathVariable String name) {
-        Enumeration paramNames = request.getParameterNames();
-        Map paramsMap = new HashMap<String, Object>();
+        Enumeration<String> paramNames = request.getParameterNames();
+        Map<String, Object> paramsMap = new HashMap<String, Object>();
         while (paramNames.hasMoreElements()) {
             String paramName = (String) paramNames.nextElement();
             String paramValue = request.getParameter(paramName);
             paramsMap.put(paramName, paramValue);
         }
-        Map jsonParamMap = new HashMap<String, Object>();
+        Map<String, Object> jsonParamMap = new HashMap<String, Object>();
         BufferedReader br;
         try {
             br = request.getReader();
@@ -61,7 +69,7 @@ public class SysAutoApiExecuteController {
                 wholeStr += str;
             }
             if (StringUtils.isNotEmpty(wholeStr)) {
-                jsonParamMap = JSON.parseObject(wholeStr, Map.class);
+                jsonParamMap = JSON.parseObject(wholeStr, new TypeReference<Map<String, Object>>(){});
             }
             paramsMap.putAll(jsonParamMap);
         } catch (Exception e) {
@@ -82,23 +90,24 @@ public class SysAutoApiExecuteController {
                 return result;
             }
             if (sam.getDoParams() != null && !"".equals(sam.getDoParams())) {
-                Map<String, Object> initParams = JSON.parseObject(sam.getDoParams(), Map.class);
+                Map<String, Object> initParams = JSON.parseObject(sam.getDoParams(), new TypeReference<Map<String, Object>>(){});
                 paramsMap.putAll(initParams);
             }
             ApplicationContext context = SpringContextUtils.getApplicationContext();
 
             ClassLoader parent = this.getClass().getClassLoader();
-            GroovyClassLoader loader = new GroovyClassLoader(parent);
-            Class dataHandleScript = loader.parseClass(sam.getCodeText());
-            ExecuteHandleService executeHandleService = (ExecuteHandleService) dataHandleScript.newInstance();
-            context.getAutowireCapableBeanFactory().autowireBean(executeHandleService);
-            result = executeHandleService.doPress(request, response, paramsMap);
+            try (GroovyClassLoader loader = new GroovyClassLoader(parent)) {
+                Class<?> dataHandleScript = loader.parseClass(sam.getCodeText());
+                ExecuteHandleService executeHandleService = (ExecuteHandleService) dataHandleScript.getDeclaredConstructor().newInstance();
+                context.getAutowireCapableBeanFactory().autowireBean(executeHandleService);
+                result = executeHandleService.doPress(request, response, paramsMap);
 
-            SysAutoapiHandle sah = this.sysAutoapiHandleService.getById(sam.getHandleId());
-            if (StringUtils.isNotEmpty(sam.getHandleId()) && StringUtils.isNotEmpty(sam.getCodeText())) {
-                Class afterHandleScript = loader.parseClass(sah.getCodeText());
-                AfterExecuteHandleService afterExecuteHandleService = (AfterExecuteHandleService) afterHandleScript.newInstance();
-                result = afterExecuteHandleService.doPress(request, response, result);
+                SysAutoapiHandle sah = this.sysAutoapiHandleService.getById(sam.getHandleId());
+                if (StringUtils.isNotEmpty(sam.getHandleId()) && StringUtils.isNotEmpty(sam.getCodeText())) {
+                    Class<?> afterHandleScript = loader.parseClass(sah.getCodeText());
+                    AfterExecuteHandleService afterExecuteHandleService = (AfterExecuteHandleService) afterHandleScript.getDeclaredConstructor().newInstance();
+                    result = afterExecuteHandleService.doPress(request, response, result);
+                }
             }
 
             if (result instanceof Result) {

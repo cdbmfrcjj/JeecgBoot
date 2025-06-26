@@ -162,15 +162,9 @@ spring:
   #redis 配置
   redis:
     database: 0
-<<<<<<< HEAD
     host: 221.207.236.210
     port: 6399
     password:
-=======
-    host: 127.0.0.1
-    port: 6379
-    password: ''
->>>>>>> upstream/master
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:org/jeecg/**/xml/*Mapper.xml
