@@ -55,7 +55,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { defHttp } from '/@/utils/http/axios';
-  import { useTableColumns } from '@/views/super/online/cgform/hooks/auto/useTableColumns';
+  import { useTableColumns } from '../hooks/useTableColumns';
   import { createAsyncComponent } from '@/utils/factory/createAsyncComponent';
   import { useFixedHeightModal } from '../hooks/useLinkTable';
 
